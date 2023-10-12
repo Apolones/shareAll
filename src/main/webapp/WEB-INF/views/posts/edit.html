@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit post</title>
+</head>
+<body>
+    <div>
+        <form th:method="PATCH" th:object="${post}" th:action="@{/posts/{id}(id=${post.getId()})}" >
+            <label for="text">What u want to edit</label>
+            <input type="text" th:value="${post.getS()}" th:field="*{s}" id="text"/>
+            <input type="submit" value="Send"/>
+        </form>
+    </div>
+    <div>
+        <br/>
+        <a href="/posts">Back</a>
+    </div>
+
+</body>
+</html>

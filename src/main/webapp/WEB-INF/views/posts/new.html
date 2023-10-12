@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create new post</title>
+</head>
+<body>
+    <div>
+        <form method="post" th:action="@{/posts}" th:object="${post}">
+            <label for="text">What u want to say</label>
+            <input type="text" th:field="*{s}" id="text"/>
+            <input type="submit" value="Send"/>
+        </form>
+    </div>
+    <div>
+        <br/>
+        <a href="/posts">Back</a>
+    </div>
+</body>
+</html>
