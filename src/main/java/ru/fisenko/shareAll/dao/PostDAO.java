@@ -1,18 +1,26 @@
 package ru.fisenko.shareAll.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementSetter;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 import ru.fisenko.shareAll.models.Post;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 @Component
 public class PostDAO {
     private static JdbcTemplate jdbcTemplate;
+    @Autowired
+    private HashDAO hashDAO;
 
     public PostDAO(JdbcTemplate jdbcTemplate) {
         PostDAO.jdbcTemplate = jdbcTemplate;
@@ -37,8 +45,9 @@ public class PostDAO {
         calendar.add(Calendar.DATE,7);
         post.setExpired(new java.sql.Date(calendar.getTimeInMillis()));
         jdbcTemplate.update(
-                "INSERT INTO posts_db(text, data, expired) VALUES (?, ?, ?)",
-                post.getS(), post.getData(),post.getExpired());
+                "INSERT INTO posts_db(text, data, expired, url) VALUES (?, ?, ?, ?)",
+                post.getS(), post.getData(),post.getExpired(),hashDAO.getHash());
+
     }
 
     public void update(int id, Post post){
@@ -54,6 +63,14 @@ public class PostDAO {
         jdbcTemplate.update(
                 "DELETE FROM posts_db WHERE id =?",
                 id);
+    }
+
+    public List<String> hashCheck (List<String> url){
+        String inSql = String.join(",", Collections.nCopies(url.size(), "?"));
+       return jdbcTemplate.query(String.format("SELECT url FROM posts_db WHERE 'url' IN (%s)", inSql),
+               url.toArray(),
+               ResultSet::getString);
+
     }
 
 }

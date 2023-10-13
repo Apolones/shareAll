@@ -17,6 +17,7 @@ public class PostMapper implements RowMapper<Post> {
             post.setS(rs.getString("text"));
             post.setData(rs.getDate("data"));
             post.setExpired(rs.getDate("expired"));
+            post.setUrl(rs.getString("url"));
 
         return post;
     }
