@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Post</title>
+</head>
+<body>
+        <p th:text="${post.getS()}">data</p>
+        <p>on
+            <a th:text="${post.getData()}">data</a>
+            expired
+            <a th:text="${post.getExpired()}">data</a>
+        </p>
+        <br/>
+        <form th:method="DELETE" th:action="@{/posts/{id} (id=${post.getId()})}">
+            <input type="submit" value="Delete"/>
+        </form>
+        <br/>
+        <form th:method="GET" th:action="@{/posts/{id}/edit (id=${post.getId()})}">
+            <input type="submit" value="Edit"/>
+        </form>
+
+        <br/>
+        <a href="/posts">Back</a>
+    </div>
+</body>
+</html>
