@@ -1,33 +1,25 @@
 package ru.fisenko.shareAll.models;
 
+import jakarta.persistence.Entity;
+
 import java.util.Date;
 
 public class Post {
-    private int id;
     private String s;
     private Date data;
     private Date expired;
-    private String url;
+    private String id;
 
 
-    public Post(int id, String s, Date data, Date expired, String url) {
-        this.id = id;
+    public Post(String s, Date data, Date expired, String id) {
         this.s = s;
         this.data = data;
         this.expired = expired;
-        this.url = url;
+        this.id = id;
     }
 
     public Post() {
 
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getS() {
@@ -54,11 +46,11 @@ public class Post {
         this.expired = expired;
     }
 
-    public String getUrl() {
-        return url;
+    public String getId() {
+        return id;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setId(String id) {
+        this.id = id;
     }
 }

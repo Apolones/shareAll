@@ -32,10 +32,10 @@ public class PostDAO {
                 new PostMapper());
     }
 
-    public Post show(int id){
+    public Post show(String id){
         return jdbcTemplate.query(
                 "SELECT * FROM posts_db WHERE id=?",
-                new Integer[]{id}, new PostMapper())
+                new String[]{id}, new PostMapper())
                 .stream().findAny().orElse(null);
     }
 
@@ -45,12 +45,12 @@ public class PostDAO {
         calendar.add(Calendar.DATE,7);
         post.setExpired(new java.sql.Date(calendar.getTimeInMillis()));
         jdbcTemplate.update(
-                "INSERT INTO posts_db(text, data, expired, url) VALUES (?, ?, ?, ?)",
+                "INSERT INTO posts_db(text, data, expired, id) VALUES (?, ?, ?, ?)",
                 post.getS(), post.getData(),post.getExpired(),hashDAO.getHash());
 
     }
 
-    public void update(int id, Post post){
+    public void update(String id, Post post){
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE,7);
         post.setExpired(new java.sql.Date(calendar.getTimeInMillis()));
@@ -59,16 +59,16 @@ public class PostDAO {
                 post.getS(), post.getExpired(), id);
     }
 
-    public void delete(int id) {
+    public void delete(String id) {
         jdbcTemplate.update(
                 "DELETE FROM posts_db WHERE id =?",
                 id);
     }
 
-    public List<String> hashCheck (List<String> url){
-        String inSql = String.join(",", Collections.nCopies(url.size(), "?"));
-       return jdbcTemplate.query(String.format("SELECT url FROM posts_db WHERE 'url' IN (%s)", inSql),
-               url.toArray(),
+    public List<String> hashCheck (List<String> id){
+        String inSql = String.join(",", Collections.nCopies(id.size(), "?"));
+       return jdbcTemplate.query(String.format("SELECT id FROM posts_db WHERE 'id' IN (%s)", inSql),
+               id.toArray(),
                ResultSet::getString);
 
     }

@@ -15,7 +15,7 @@ public class PostsController {
     private PostDAO postDAO;
 
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model){
+    public String show(@PathVariable("id") String id, Model model){
         model.addAttribute("post", postDAO.show(id));
         return "posts/show";
     }
@@ -37,19 +37,19 @@ public class PostsController {
     }
 
     @GetMapping("/{id}/edit")
-    public String editPost(@PathVariable("id") int id, Model model){
+    public String editPost(@PathVariable("id") String id, Model model){
         model.addAttribute("post", postDAO.show(id));
         return "posts/edit";
     }
 
     @PatchMapping("/{id}")
-    public String updatePost(@PathVariable("id") int id, @ModelAttribute("post") Post post){
+    public String updatePost(@PathVariable("id") String id, @ModelAttribute("post") Post post){
         postDAO.update(id, post);
         return "redirect:/posts";
     }
 
     @DeleteMapping("/{id}")
-    public String deletePost(@PathVariable("id") int id){
+    public String deletePost(@PathVariable("id") String id){
         postDAO.delete(id);
         return "redirect:/posts";
     }
