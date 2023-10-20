@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Sign In</title>
+</head>
+<body>
+<h1>Sign In</h1>
+<div th:if="${param.error}" th:style="'color: red;'">
+    Username is unavailable</div>
+<form th:action="@{/auth/registration}" method="post" th:object="${person}">
+    <div>
+        <input type="text" th:field="*{login}"/>
+    </div>
+    <div>
+        <input type="password" th:field="*{password}"/>
+    </div>
+    <input type="submit" value="Registration" />
+</form>
+</body>
+</html>
