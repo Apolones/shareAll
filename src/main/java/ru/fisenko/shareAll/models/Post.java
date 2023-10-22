@@ -1,10 +1,7 @@
 package ru.fisenko.shareAll.models;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.Date;
 
@@ -21,6 +18,8 @@ public class Post {
     private Date data;
     @Column(name = "expired")
     private Date expired;
+    @Column(name = "user_id")
+    private int user_id;
 
 
     public Post(String s, Date data, Date expired, String id) {

@@ -36,7 +36,7 @@ public class PostsService {
     }
 
     @Transactional
-    public void save(Post post){
+    public void save(Post post, String username){
         post.setData(currentDate());
         post.setExpired(currentDate(1));
         post.setId(urlService.getUrl());

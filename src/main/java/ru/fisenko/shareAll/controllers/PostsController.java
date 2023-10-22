@@ -1,6 +1,8 @@
 package ru.fisenko.shareAll.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -34,8 +36,8 @@ public class PostsController {
     }
 
     @PostMapping("")
-    public String savePost(@ModelAttribute("post") Post post){
-        postsService.save(post);
+    public String savePost(@ModelAttribute("post") Post post, @AuthenticationPrincipal UserDetails userDetails){
+        postsService.save(post, userDetails.getUsername());
         return "redirect:/posts";
     }
 
@@ -56,6 +58,8 @@ public class PostsController {
         postsService.delete(id);
         return "redirect:/posts";
     }
+
+
 
 
 
