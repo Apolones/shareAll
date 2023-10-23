@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.fisenko.shareAll.models.Post;
 import ru.fisenko.shareAll.repositories.PostsRepository;
+import ru.fisenko.shareAll.security.PersonDetails;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -16,12 +17,13 @@ import java.util.Optional;
 public class PostsService {
     private final PostsRepository postsRepository;
     private final UrlService urlService;
-
+    private final PersonDetailsService personDetailsService;
 
     @Autowired
-    public PostsService(PostsRepository postsRepository, UrlService urlService) {
+    public PostsService(PostsRepository postsRepository, UrlService urlService, PersonDetailsService personDetailsService) {
         this.postsRepository = postsRepository;
         this.urlService = urlService;
+        this.personDetailsService = personDetailsService;
     }
 
 
@@ -36,10 +38,12 @@ public class PostsService {
     }
 
     @Transactional
-    public void save(Post post, String username){
+    public void save(Post post, PersonDetails personDetails){
         post.setData(currentDate());
         post.setExpired(currentDate(1));
         post.setId(urlService.getUrl());
+        if(personDetails!=null) post.setPerson(personDetailsService.getPersonByUsername(personDetails.getUsername()));
+        else post.setPerson(personDetailsService.getPersonByUsername("ADMIN"));
         postsRepository.save(post);
     }
 

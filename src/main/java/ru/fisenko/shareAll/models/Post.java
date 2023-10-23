@@ -2,6 +2,7 @@ package ru.fisenko.shareAll.models;
 
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
 
 import java.util.Date;
 
@@ -18,8 +19,9 @@ public class Post {
     private Date data;
     @Column(name = "expired")
     private Date expired;
-    @Column(name = "user_id")
-    private int user_id;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private Person person;
 
 
     public Post(String s, Date data, Date expired, String id) {
@@ -63,5 +65,13 @@ public class Post {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
     }
 }

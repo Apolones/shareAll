@@ -28,25 +28,28 @@ public class PersonDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional <Person> person = peopleRepository.findPersonByLogin(username);
-        if(person.isEmpty())throw new UsernameNotFoundException("User not found");
-        return new PersonDetails(person.get());
+    public PersonDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Person person = peopleRepository.findPersonByLogin(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return new PersonDetails(person);
+
     }
 
     public boolean isUsernameUnique(Person person){
-       Optional <Person> persondb = peopleRepository.findPersonByLogin(person.getLogin());
-
-       return persondb.isEmpty();
+       return peopleRepository.findPersonByLogin(person.getLogin()).isEmpty();
     }
 
     @Transactional
     public void saveUser(Person person) {
-        if(peopleRepository.findPersonByLogin(person.getLogin()).isPresent()) throw new DuplicateKeyException("Username already taken");
+        if(!isUsernameUnique(person)) throw new DuplicateKeyException("Username already taken");
         person.setRole("USER");
         person.setEnabled(true);
         person.setPassword(passwordEncoder.encode(person.getPassword()));
         peopleRepository.save(person);
+    }
 
+    public Person getPersonByUsername (String username){
+        Optional <Person> person = peopleRepository.findPersonByLogin(username);
+        return person.orElseGet(() -> peopleRepository.findPersonByLogin("ADMIN").get());
     }
 }

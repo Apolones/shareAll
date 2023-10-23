@@ -11,9 +11,11 @@
     <div>
         <input type="text" th:field="*{login}"/>
     </div>
+    <div th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></div>
     <div>
         <input type="password" th:field="*{password}"/>
     </div>
+    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
     <input type="submit" value="Registration" />
 </form>
 </body>
