@@ -25,7 +25,7 @@ public class PersonValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         Person person = (Person) target;
-        if(!personDetailsService.isUsernameUnique(person)) errors.rejectValue("login", "", "This username already taken");
+        if(personDetailsService.isUsernameTaken(person)) errors.rejectValue("login", "", "This username already taken");
 
     }
 }

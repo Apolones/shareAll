@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +12,8 @@ import ru.fisenko.shareAll.models.Post;
 import ru.fisenko.shareAll.security.PermissionManager;
 import ru.fisenko.shareAll.security.PersonDetails;
 import ru.fisenko.shareAll.services.PostsService;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/posts")
@@ -79,6 +81,18 @@ public class PostsController {
         } else{
             throw new AccessDeniedException("You do not have permission to access this page");
         }
+    }
+
+    @ResponseBody
+    @PostMapping("/url")
+    public List<String> isUrlAvailable(@RequestBody List<String> urls){
+        return postsService.findIdByList(urls);
+    }
+
+    @ResponseBody
+    @GetMapping("/csrf_token")
+    public CsrfToken getCsrfToken(CsrfToken token) {
+        return token;
     }
 
     @ExceptionHandler(AccessDeniedException.class)

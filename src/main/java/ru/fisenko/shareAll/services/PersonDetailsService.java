@@ -2,7 +2,6 @@ package ru.fisenko.shareAll.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,13 +34,13 @@ public class PersonDetailsService implements UserDetailsService {
 
     }
 
-    public boolean isUsernameUnique(Person person){
-       return peopleRepository.findPersonByLogin(person.getLogin()).isEmpty();
+    public boolean isUsernameTaken(Person person){
+       return peopleRepository.findPersonByLogin(person.getLogin()).isPresent();
     }
 
     @Transactional
     public void saveUser(Person person) {
-        if(!isUsernameUnique(person)) throw new DuplicateKeyException("Username already taken");
+        if(isUsernameTaken(person)) throw new DuplicateKeyException("Username already taken");
         person.setRole("USER");
         person.setEnabled(true);
         person.setPassword(passwordEncoder.encode(person.getPassword()));

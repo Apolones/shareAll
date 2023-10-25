@@ -3,6 +3,7 @@ package ru.fisenko.shareAll.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.fisenko.shareAll.integration.RestClient;
 import ru.fisenko.shareAll.models.Post;
 import ru.fisenko.shareAll.repositories.PostsRepository;
 import ru.fisenko.shareAll.security.PersonDetails;
@@ -16,14 +17,14 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class PostsService {
     private final PostsRepository postsRepository;
-    private final UrlService urlService;
     private final PersonDetailsService personDetailsService;
+    private final RestClient restClient;
 
     @Autowired
-    public PostsService(PostsRepository postsRepository, UrlService urlService, PersonDetailsService personDetailsService) {
+    public PostsService(PostsRepository postsRepository, PersonDetailsService personDetailsService, RestClient restClient) {
         this.postsRepository = postsRepository;
-        this.urlService = urlService;
         this.personDetailsService = personDetailsService;
+        this.restClient = restClient;
     }
 
 
@@ -41,9 +42,10 @@ public class PostsService {
     public void save(Post post, PersonDetails personDetails){
         post.setData(currentDate());
         post.setExpired(currentDate(1));
-        post.setId(urlService.getUrl());
+        post.setId(restClient.sendGetRequest());
         if(personDetails!=null) post.setPerson(personDetailsService.getPersonByUsername(personDetails.getUsername()));
         else post.setPerson(personDetailsService.getPersonByUsername("ADMIN"));
+
         postsRepository.save(post);
     }
 
@@ -69,6 +71,10 @@ public class PostsService {
             }
         }
         return count;
+    }
+
+    public List<String> findIdByList (List<String> urls){
+        return postsRepository.findByInventoryIds(urls);
     }
 
     private Date currentDate(){
