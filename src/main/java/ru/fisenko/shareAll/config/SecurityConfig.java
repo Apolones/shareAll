@@ -21,25 +21,23 @@ public class SecurityConfig {
                 //TODO настроить предачу csrf токена другому микросервису (для форм в браузере все настроено)
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                                .requestMatchers(HttpMethod.POST).permitAll()
-                                .requestMatchers("/**").permitAll()
+                        .requestMatchers(HttpMethod.POST).permitAll()
+                        .requestMatchers("/**").permitAll()
                 )
                 .formLogin(form -> form.loginPage("/auth/login")
-                .loginProcessingUrl("/auth/login")
-                .defaultSuccessUrl("/posts", true)
-                .failureUrl("/auth/login?error")
-                .permitAll());
+                        .loginProcessingUrl("/auth/login")
+                        .defaultSuccessUrl("/posts", true)
+                        .failureUrl("/auth/login?error")
+                        .permitAll());
 
         return http.build();
     }
 
 
-
     @Bean
-    public PasswordEncoder getPasswordEncoder(){
+    public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
 
 }

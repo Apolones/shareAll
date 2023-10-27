@@ -6,9 +6,9 @@
 </head>
 <body>
     <div>
-        <form method="post" th:action="@{/posts}" th:object="${post}">
+        <form method="POST" th:action="@{/posts}" th:object="${postDTO}">
             <label for="text">What u want to say</label>
-            <input type="text" th:field="*{s}" id="text"/>
+            <input type="text" th:field="*{storageData}" id="text"/>
             <input type="submit" value="Send"/>
         </form>
     </div>

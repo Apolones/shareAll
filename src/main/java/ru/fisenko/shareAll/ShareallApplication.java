@@ -7,9 +7,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 public class ShareallApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(ShareallApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ShareallApplication.class, args);
+    }
 
 }

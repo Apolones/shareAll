@@ -6,14 +6,13 @@
 </head>
 <body>
     <div>
-        <div th:if="${param.error}" th:style="' color: red;'">
-            You don't have permission</div>
-        <form th:method="PATCH" th:object="${post}" th:action="@{/posts/{id}(id=${post.getId()})}" >
+        <form th:method="PATCH" th:object="${postDTO}" th:action="@{/posts/{id}(id=${postDTO.getId()})}" >
             <label for="text">What u want to edit</label>
-            <input type="text" th:value="${post.getS()}" th:field="*{s}" id="text"/>
+            <input type="text" th:value="${postDTO.getStorageData()}" th:field="*{storageData}"  id="text"/>
             <input type="submit" value="Send"/>
         </form>
     </div>
+
     <div>
         <br/>
         <a href="/posts">Back</a>

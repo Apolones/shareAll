@@ -34,7 +34,9 @@ public class LoginController {
     }
 
     @GetMapping("/registration")
-    String registration(@ModelAttribute("person") Person person) {return "auth/registration";}
+    String registration(@ModelAttribute("person") Person person) {
+        return "auth/registration";
+    }
 
     @PostMapping("/registration")
     String newPerson(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult) {
@@ -46,7 +48,7 @@ public class LoginController {
 
     @GetMapping("user")
     public String userDetails(@AuthenticationPrincipal UserDetails userDetails, Model model, RedirectAttributes redirectAttributes) {
-        String username = userDetails !=null ? userDetails.getUsername() : "User not authorized";
+        String username = userDetails != null ? userDetails.getUsername() : "User not authorized";
         model.addAttribute("login", username);
         return "auth/user";
     }

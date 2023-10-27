@@ -5,8 +5,8 @@
     <title>Access denied</title>
 </head>
 <body>
-
-<h1 th:style="'color: red;'">
-    Access denied</h1>
+<div th:if="${error != null}" class="error-message">
+    <h1 th:utext="${error.getMessage()}" ></h1>
+</div>
 </body>
 </html>

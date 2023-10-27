@@ -5,21 +5,25 @@
     <title>Hot posts</title>
 </head>
 <body>
-    <div th:each="post : ${posts}">
-        <a th:text="${post.getS()}" th:href="@{/posts/{id}(id=${post.getId})}">person</a>
+    <div th:each="post : ${postsDTO}">
+        <a th:text="${post.getStorageData.length() > 20 ? #strings.substring(post.getStorageData(),0, 20) +'...' : post.getStorageData  }"
+           th:href="@{/posts/{id}(id=${post.getId})}">person</a>
     </div>
     <br/>
     <div>
         <a href="posts/new">Creat new post</a>
     </div>
+    <br/>
     <div>
         <form method="post" th:action="@{/logout}">
             <input type="submit" value="logout"/>
         </form>
     </div>
+    <br/>
     <div>
         <a href="auth/login">Log In</a>
     </div>
+    <br/>
     <div>
         <a href="auth/registration">Sign In</a>
     </div>

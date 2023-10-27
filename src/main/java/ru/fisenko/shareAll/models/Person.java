@@ -3,7 +3,6 @@ package ru.fisenko.shareAll.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-import org.hibernate.mapping.Set;
 
 import java.util.List;
 
@@ -16,7 +15,7 @@ public class Person {
     @Column(name = "id")
     private int id;
     @NotEmpty
-    @Size(min = 3, max = 45,  message = "Name should be between 3 and 45 characters")
+    @Size(min = 3, max = 45, message = "Name should be between 3 and 45 characters")
     @Column(name = "login")
     private String login;
     @NotEmpty(message = "Password should not be empty")

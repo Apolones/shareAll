@@ -9,48 +9,47 @@ import java.io.*;
 @Component
 public class FileCRUD {
     private String defaultPath = "storage/";
-    public void create(String path, String data){
-        try {
-            FileWriter writer = new FileWriter(defaultPath + path);
+
+    public void create(String path, String data) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(defaultPath + path))) {
             writer.write(data);
-            writer.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
         }
 
     }
 
     public String read(String path) {
-        String data;
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(defaultPath + path));
-            data = reader.readLine();
-            reader.close();
+        try (BufferedReader reader = new BufferedReader(new FileReader(defaultPath + path))) {
+            return reader.readLine();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
+            return "File not found";
         }
-
-        return data;
     }
+
 
     public void update(String path, String data) {
-        try {
-            FileWriter writer = new FileWriter(defaultPath + path, false);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(defaultPath + path))) {
             writer.write(data);
-            writer.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    public void delete(String path) {
+        File file = new File(defaultPath + path);
+        try {
+            if (file.exists())
+                file.delete();
+            else System.out.println("Can't delete file: " + defaultPath + path);
+        } catch (SecurityException e) {
+            System.out.println(e.getMessage());
         }
     }
 
-    public void delete(String path){
-
-        File file = new File(defaultPath + path);
-        if(file.exists())
-            file.delete();
-    }
-
-    public void setDefaultPath(String defaultPath){
-        this.defaultPath=defaultPath;
+    public void setDefaultPath(String defaultPath) {
+        this.defaultPath = defaultPath;
     }
 }

@@ -41,7 +41,7 @@ public class PersonDetailsService implements UserDetailsService {
     @Transactional
     public void saveUser(Person person) {
         if(isUsernameTaken(person)) throw new DuplicateKeyException("Username already taken");
-        person.setRole("USER");
+        person.setRole("ROLE_USER");
         person.setEnabled(true);
         person.setPassword(passwordEncoder.encode(person.getPassword()));
         peopleRepository.save(person);
@@ -49,6 +49,8 @@ public class PersonDetailsService implements UserDetailsService {
 
     public Person getPersonByUsername (String username){
         Optional <Person> person = peopleRepository.findPersonByLogin(username);
-        return person.orElseGet(() -> peopleRepository.findPersonByLogin("ADMIN").get());
+        return person.orElseGet(
+                () -> peopleRepository.findPersonByLogin("anonymous").
+                        orElseThrow(() -> new UsernameNotFoundException("anonymous not found")));
     }
 }

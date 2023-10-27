@@ -2,7 +2,7 @@ package ru.fisenko.shareAll.models;
 
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Cascade;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
 
@@ -13,21 +13,24 @@ public class Post {
     @Id
     @Column(name = "id")
     private String id;
-    @Column(name = "text")
-    private String s;
-    @Column(name = "data")
-    private Date data;
-    @Column(name = "expired")
-    private Date expired;
+    @NotNull
+    @Column(name = "path_data")
+    private String pathData;
+    @NotNull
+    @Column(name = "create_time")
+    private Date createTime;
+    @NotNull
+    @Column(name = "expired_time")
+    private Date expiredTime;
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private Person person;
 
 
-    public Post(String s, Date data, Date expired, String id) {
-        this.s = s;
-        this.data = data;
-        this.expired = expired;
+    public Post(String pathData, Date createTime, Date expiredTime, String id) {
+        this.pathData = pathData;
+        this.createTime = createTime;
+        this.expiredTime = expiredTime;
         this.id = id;
     }
 
@@ -35,28 +38,28 @@ public class Post {
 
     }
 
-    public String getS() {
-        return s;
+    public String getPathData() {
+        return pathData;
     }
 
-    public void setS(String s) {
-        this.s = s;
+    public void setPathData(String s) {
+        this.pathData = s;
     }
 
-    public Date getData() {
-        return data;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setData(Date data) {
-        this.data = data;
+    public void setCreateTime(Date data) {
+        this.createTime = data;
     }
 
-    public Date getExpired() {
-        return expired;
+    public Date getExpiredTime() {
+        return expiredTime;
     }
 
-    public void setExpired(Date expired) {
-        this.expired = expired;
+    public void setExpiredTime(Date expired) {
+        this.expiredTime = expired;
     }
 
     public String getId() {

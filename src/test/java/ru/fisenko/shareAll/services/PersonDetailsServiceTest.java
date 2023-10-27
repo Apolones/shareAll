@@ -5,8 +5,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.server.ResponseStatusException;
 import ru.fisenko.shareAll.models.Person;
 import ru.fisenko.shareAll.repositories.PeopleRepository;
 import ru.fisenko.shareAll.security.PersonDetails;
@@ -93,7 +95,7 @@ public class PersonDetailsServiceTest {
 
         verify(peopleRepository, times(1)).save(person);
         assertEquals("encodedPassword", person.getPassword());
-        assertEquals("USER", person.getRole());
+        assertEquals("ROLE_USER", person.getRole());
     }
 
     @Test
@@ -109,16 +111,25 @@ public class PersonDetailsServiceTest {
     }
 
     @Test
-    public void getPersonByUsername_UserDoesNotExist_ReturnsAdmin() {
+    public void getPersonByUsername_UserDoesNotExist_ReturnsAnonymous() {
         when(peopleRepository.findPersonByLogin("nonExistentUser")).thenReturn(Optional.empty());
 
-        Person admin = new Person();
-        admin.setLogin("ADMIN");
-        when(peopleRepository.findPersonByLogin("ADMIN")).thenReturn(Optional.of(admin));
+        Person person = new Person();
+        person.setLogin("anonymous");
+        when(peopleRepository.findPersonByLogin("anonymous")).thenReturn(Optional.of(person));
 
         Person result = personDetailsService.getPersonByUsername("nonExistentUser");
 
         assertNotNull(result);
-        assertEquals("ADMIN", result.getLogin());
+        assertEquals("anonymous", result.getLogin());
+    }
+
+    @Test
+    public void getPersonByUsername_UserAndAnonymousDoesNotExist_ThrowException() {
+        when(peopleRepository.findPersonByLogin("nonExistentUser")).thenReturn(Optional.empty());
+
+        UsernameNotFoundException exception = assertThrows(UsernameNotFoundException.class, () -> personDetailsService.getPersonByUsername("nonExistentUser"));
+
+        assertEquals("anonymous not found", exception.getMessage());
     }
 }

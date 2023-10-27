@@ -5,18 +5,18 @@
     <title>Post</title>
 </head>
 <body>
-        <p th:text="${post.getS()}">data</p>
+        <p th:text="${postDTO.getStorageData()}">data</p>
         <p>on
-            <a th:text="${post.getData()}">data</a>
+            <a th:text="${postDTO.getCreateTime()}">data</a>
             expired
-            <a th:text="${post.getExpired()}">data</a>
+            <a th:text="${postDTO.getExpiredTime()}">data</a>
         </p>
         <br/>
-        <form th:if="${username == post.getPerson().getLogin() || username == 'ADMIN'}" th:method="DELETE" th:action="@{/posts/{id} (id=${post.getId()})}">
+        <form th:if="${showDelete}" th:method="DELETE" th:action="@{/posts/{id} (id=${postDTO.getId()})}">
             <input type="submit" value="Delete"/>
         </form>
         <br/>
-        <form th:if="${username == post.getPerson().getLogin() && username != 'ADMIN'}" th:method="GET" th:action="@{/posts/{id}/edit (id=${post.getId()})}">
+        <form th:if="${showEdit}" th:method="GET" th:action="@{/posts/{id}/edit (id=${postDTO.getId()})}">
             <input type="submit" value="Edit"/>
         </form>
 

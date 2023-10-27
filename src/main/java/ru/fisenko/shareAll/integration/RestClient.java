@@ -14,6 +14,5 @@ public class RestClient {
         return restTemplate.getForObject(url, String.class);
     }
 
-
 }
 
