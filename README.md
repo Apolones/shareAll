@@ -20,6 +20,4 @@ Spring Boot
 <br>JUnit 5
 
 ### App Architecture:
-![pet](https://github.com/Apolones/shareAll/assets/85924175/b63a7919-8cb2-43e9-8a70-b2118b4bc937)
-
-
+![pet](https://github.com/Apolones/shareAll/assets/85924175/059a0689-3325-4c2c-bfbc-f64947f093c5)
