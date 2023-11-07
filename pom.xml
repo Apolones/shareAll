@@ -10,8 +10,8 @@
 	</parent>
 	<groupId>ru.fisenko</groupId>
 	<artifactId>shareall</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>shareall</name>
+	<version>0.0.1</version>
+	<name>shareAll</name>
 	<description>Pet project</description>
 	<properties>
 		<java.version>21</java.version>

@@ -51,6 +51,18 @@ public class PersonDetailsService implements UserDetailsService {
         Optional <Person> person = peopleRepository.findPersonByLogin(username);
         return person.orElseGet(
                 () -> peopleRepository.findPersonByLogin("anonymous").
-                        orElseThrow(() -> new UsernameNotFoundException("anonymous not found")));
+                        orElseGet(() -> createAnonymous()));
+    }
+
+    @Transactional
+    public Person createAnonymous() {
+        Person person = new Person();
+        person.setLogin("anonymous");
+        person.setRole("ROLE_USER");
+        person.setEnabled(true);
+        //Users can't log in with this password because all passwords are encoded and contain 60 characters in the database
+        person.setPassword("root");
+        peopleRepository.save(person);
+        return person;
     }
 }
